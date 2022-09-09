@@ -11,6 +11,7 @@ class QTT {
     return $('button[type="submit"]');
   }
 
+
   get searchInputField() {
     return $(`//input[@id='regular-qtt-station-picker-origin-input']`)
   }

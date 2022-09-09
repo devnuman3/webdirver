@@ -1,3 +1,5 @@
+// const click = require("webdriverio/build/commands/element/click");
+
 class travelPreference {
     get travelPreference() {
         return $("//body/ace-root[@id='ace-root']/div[1]/main[1]/div[1]/ace-account-navbar[1]/div[1]/div[1]/nav[1]/a[4]")
@@ -15,22 +17,76 @@ class travelPreference {
     get quietCoach() {
         return $("//select[@id='seat-quiet-coach-options']")
     }
-    get nearTo() {
-        return $("//body/ace-root[@id='ace-root']/div[1]/main[1]/div[1]/ace-account-navbar[1]/div[1]/div[1]/ace-travel-preferences[1]/div[2]/ace-seat-preference-form[1]/div[1]/div[2]/form[1]/div[2]/ace-checkbox[3]/label[1]/div[1]")
+
+    // Near Options Selector Code
+    get nearToToilet(){
+        return $('//*[@id="ace-root"]/div/main/div/ace-account-navbar/div/div/ace-travel-preferences/div[2]/ace-seat-preference-form/div/div[2]/form/div[2]/ace-checkbox[1]/label/span')
     }
+    get checknearToilet(){
+        return $('#seat-near-lavatory-checkbox')
+    }
+
+    get checkNearPower(){
+        return $('#seat-near-power-checkbox')
+    }
+    get checkNearLuggage(){
+        return $('#seat-near-luggage-checkbox')
+    }
+
+    get checkNearTable(){
+        return $('#seat-near-table-checkbox')
+    }
+
+    get nearToPower(){
+        return $('//*[@id="ace-root"]/div/main/div/ace-account-navbar/div/div/ace-travel-preferences/div[2]/ace-seat-preference-form/div/div[2]/form/div[2]/ace-checkbox[2]/label/span')
+    }
+    get nearToLuggage(){
+        return $('//*[@id="ace-root"]/div/main/div/ace-account-navbar/div/div/ace-travel-preferences/div[2]/ace-seat-preference-form/div/div[2]/form/div[2]/ace-checkbox[3]/label/span')
+    }
+
+    get nearToTable(){
+        return $('//*[@id="ace-root"]/div/main/div/ace-account-navbar/div/div/ace-travel-preferences/div[2]/ace-seat-preference-form/div/div[2]/form/div[2]/ace-checkbox[4]/label/span')
+    }
+
 
     get saveChanges() {
         return $("//button[contains(text(),'Save changes')]")
     }
+    /////////////////////
+
+
     get addPreferences() {
-        return $("//button[contains(text(),'Add preferences')]")
+      return $('//*[@id="edit-delivery-preferences"]/button')
+    }
+
+    // Delivery preferences Code
+
+    get eTicket(){
+        return $('#e-ticket-delivery-method')
+    }
+    get eTicketXPath(){
+        return $('//*[@id="delivery-preferences"]/div[3]/ace-radio/label/span')
+    }
+    get collectTVM(){
+        return $('//*[@id="delivery-preferences"]/div[1]/ace-radio/label/span')
+    }
+    get printAtHome(){
+        return $('//*[@id="delivery-preferences"]/div[2]/ace-radio/label/span')
     }
     get royalMail() {
-        return $("//body/ace-root[@id='ace-root']/div[1]/main[1]/div[1]/ace-account-navbar[1]/div[1]/div[1]/ace-travel-preferences[1]/div[2]/ace-delivery-preference-form[1]/div[1]/div[2]/form[1]/div[4]/ace-radio[1]/label[1]/div[1]")
+        return $("//*[@id=\"delivery-preferences\"]/div[4]/ace-radio/label/span")
+    }
+    get royalMailSpecial(){
+        return $('//*[@id="delivery-preferences"]/div[5]/ace-radio/label/span')
+    }
+    get smartCard(){
+        return $('//*[@id="delivery-preferences"]/div[6]/ace-radio/label/span')
     }
     get save() {
-        return $("//button[contains(text(),'Save changes')]")
+        return $("//*[@id=\"save-changes-delivery-preferences\"]/button")
     }
+    //////////////////////
+
     get travelAssistanceEdit() {
         return $("//body/ace-root[@id='ace-root']/div[1]/main[1]/div[1]/ace-account-navbar[1]/div[1]/div[1]/ace-travel-preferences[1]/div[2]/ace-travel-assistance-preference-form[1]/div[1]/div[1]/div[1]/ace-button[1]/button[1]")
     }
@@ -82,7 +138,41 @@ class travelPreference {
         await browser.pause(5000)
     }
     async nearToFun() {
-        await this.nearTo.click();
+        // Generating Random Value
+        const randOption = Math.floor(Math.random() * 4) + 1;
+
+        // Deselecting the Selecting Options
+        if (await this.checknearToilet.isSelected() === true){
+            await this.nearToToilet.click()
+        }
+
+         if (await this.checkNearPower.isSelected()===true){
+            await this.nearToPower.click()
+        }
+
+         if (await this.checkNearLuggage.isSelected() === true){
+                await this.nearToLuggage.click()
+        }
+         if(await this.checkNearTable.isSelected()===true){
+             await this.nearToTable.click()
+         }
+        // Deselecting the Selecting Options
+
+        await browser.pause(3000)
+
+        // Selecting Random Option
+
+        if(randOption === 1){
+            await this.nearToToilet.click()
+        } else if(randOption === 2){
+            await this.nearToPower.click()
+        } else if(randOption === 3){
+            await this.nearToLuggage.click()
+        }
+        else{
+            await this.nearToTable.click()
+        }
+
         await browser.pause(3000)
     }
     async saveChangesFun() {
@@ -94,7 +184,34 @@ class travelPreference {
         await browser.pause(3000)
     }
     async royalMailFun() {
-        await this.royalMail.click();
+
+        const res = await this.eTicket.isSelected()
+
+        if(res === true){
+
+            const randOption = Math.floor(Math.random() * 5) + 1;
+            // Selecting Random Option
+            if(randOption ===1){
+                await this.collectTVM.click()
+            }
+            else if (randOption === 2){
+                await this.printAtHome.click()
+            }
+            else if (randOption === 3){
+                await this.royalMail.click()
+            }
+            else if(randOption ===4){
+                await this.royalMailSpecial.click()
+            }
+            else if (randOption===5){
+                await this.smartCard.click()
+            }
+
+        }
+        else{
+            // Selecting ETicket Option
+            await this.eTicketXPath.click()
+        }
         await browser.pause(3000)
     }
     async saveFun() {
@@ -112,13 +229,14 @@ class travelPreference {
     async enterPhNumFun() {
         await this.enterPhNum.click();
         let input = await $("//input[@id='travel-assistance-phone-number']")
-        await input.addValue(4103901)
+        await input.setValue('4103901')
+        // await input.addValue(4103901)
         await browser.pause(3000)
     }
     async additionalInfoFun() {
         await this.additionalInfo.click();
         let input = await $("//input[@id='travel-assistance-information']")
-        await input.addValue('nothing much')
+        await input.setValue('nothing much')
         await browser.pause(3000)
     }
     async saveLastFun() {
